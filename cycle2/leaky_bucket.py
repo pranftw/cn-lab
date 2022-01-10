@@ -9,13 +9,18 @@ def process_packet(packet_size, max_chunk_size, capacity, int_arr_time):
         print("Packet size exceeds capacity!")
     else:
         already_processed = 0
-        while(already_processed+max_chunk_size<=packet_size):
+        orig_packet_size = packet_size
+        while(packet_size>0):
             time.sleep(int_arr_time)
-            already_processed+=max_chunk_size
-            print(f"Processed {max_chunk_size} {already_processed}/{packet_size}")
-        time.sleep(int_arr_time)
-        if already_processed!=packet_size:
-            print(f"Processed {packet_size-already_processed} {packet_size}/{packet_size}")
+            if(packet_size-max_chunk_size>=0):
+                already_processed+=max_chunk_size
+                currently_processed = max_chunk_size
+                packet_size-=max_chunk_size
+            else:
+                already_processed+=packet_size
+                currently_processed = packet_size
+                packet_size = 0
+            print(f"Processed {currently_processed} {already_processed}/{orig_packet_size}")
     print()
 
 if __name__=='__main__':
